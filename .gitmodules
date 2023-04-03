@@ -1,6 +1,6 @@
 [submodule "amundsen"]
 	path = amundsen
-	url = git@github.com:amundsen-io/amundsen.gitamundsen
+	url = git@github.com:ProbstenHias/amundsen.git
 [submodule "superset"]
 	path = superset
 	url = https://github.com/apache/superset.git
