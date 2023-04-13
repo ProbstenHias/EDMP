@@ -28,7 +28,7 @@ dag_args = {
     # One dagrun at a time
     'max_active_runs': 1,
     # 4AM, 4PM PST
-    'schedule_interval': %s,
+    'schedule_interval': '@daily',
     'catchup': False
 }
 
@@ -67,7 +67,7 @@ OPTIONAL_TABLE_NAMES = ''
 
 def connection_string():
 
-    return "postgresql://%s:%s@%s:%s/%s" % (user, password, host, port, db)
+    return "postgresql://%s:%s@%s:%s/%s"
 
 
 def create_table_extract_job():
@@ -139,7 +139,7 @@ def create_es_publisher_sample_job():
     job.launch()
 
 
-with DAG(%s, default_args=default_args, **dag_args) as dag:
+with DAG("%s", default_args=default_args, **dag_args) as dag:
     postgres_table_extract_job = PythonOperator(
         task_id='postgres_table_extract_job',
         python_callable=create_table_extract_job
