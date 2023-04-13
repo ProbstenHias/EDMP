@@ -1,0 +1,13 @@
+version: '3'
+services:
+  registration-backend:
+    build:
+      context: ./registration-backend
+      dockerfile: Dockerfile
+    container_name: registration-backend
+    ports:
+      - "5002:5002"
+    volumes:
+      - ./airflow/dags:/app/dags
+    # now call another docker-compose file
+    
