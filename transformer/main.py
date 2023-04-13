@@ -36,11 +36,11 @@ def convert():
     new_user, new_password, new_dbname = generate_user_credentials()
     print(new_user, new_password, new_dbname)
     
-    loginGenerator = None
+    login_generator = None
     if target_db_type == 'mysql':
-        loginGenerator = GenerateLoginMysql()
+        login_generator = GenerateLoginMysql()
     
-    loginGenerator.generate_login(new_user, new_password, new_dbname)
+    login_generator.generate_login(new_user, new_password, new_dbname)
     
     dc.convert_to_data(
         target_db=target_db_type,
@@ -48,7 +48,7 @@ def convert():
         dbname=new_dbname,
         user=new_user,
         password=new_password,
-        table_name=data['target_table'],
+        table_name=data['source_table'],
     )
     
     send_email(
@@ -56,11 +56,10 @@ def convert():
         target_db_type,
         new_user,
         new_password,
-        new_dbname,
-        ""
+        new_dbname
     )
 
     return jsonify({"status": "success"})
 
 if __name__ == "__main__":
-    app.run()
+    app.run(port=5001)

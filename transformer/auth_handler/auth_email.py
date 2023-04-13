@@ -6,7 +6,7 @@ import os
 
 
 def send_email(
-    receiver_email, db_type, new_user, new_password, new_dbname, target_host
+    receiver_email, db_type, new_user, new_password, new_dbname
 ):
     load_dotenv()
     # Create a message object
@@ -14,7 +14,7 @@ def send_email(
     password = os.getenv("SENDER_MAIL_PASSWORD")
     smtp_host = os.getenv("SENDER_MAIL_HOST")
     smtp_port = os.getenv("SENDER_MAIL_PORT")
-    body = f"Your {db_type} credentials are: \nUsername: {new_user} \nPassword: {new_password} \nDatabase: {new_dbname} \nHost: {target_host}"
+    body = f"Your {db_type} credentials are: \nUsername: {new_user} \nPassword: {new_password} \nDatabase: {new_dbname}"
     message = MIMEText(body)
     message["From"] = sender_email
     message["To"] = receiver_email
@@ -32,7 +32,3 @@ def send_email(
 
     except Exception as e:
         print("Email could not be sent due to an error: ", e)
-
-
-if __name__ == "__main__":
-    send_email("matthias.weilinger@gmx.de", "mysql", "test", "test", "test", "test")

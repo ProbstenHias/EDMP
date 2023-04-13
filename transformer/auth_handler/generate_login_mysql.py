@@ -16,11 +16,11 @@ class GenerateLoginMysql(GenerateLogin):
         )
         self.cursor = self.connection.cursor()
 
-    def generate_login(self, new_username, new_password, new_dbname, host=""):
+    def generate_login(self, new_username, new_password, new_dbname):
         self.cursor.execute(f"CREATE USER \'{new_username}\'@\'%\' IDENTIFIED WITH mysql_native_password BY \'{new_password}\';")
         self.cursor.execute(f"CREATE DATABASE {new_dbname};")
         self.cursor.execute(f"GRANT ALL PRIVILEGES ON {new_dbname}.* TO \'{new_username}\'@\'%\';")
-        print(f"User: {new_username} Password: {new_password} Database: {new_dbname} Host: {host} created successfully")
+        print(f"User: {new_username} Password: {new_password} Database: {new_dbname} Host: {self.host} created successfully")
 
         # Commit the changes and close the connection
         self.connection.commit()
