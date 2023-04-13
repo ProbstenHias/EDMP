@@ -11,8 +11,6 @@ COPY . /app
 RUN pip install -r requirements.txt
 
 EXPOSE 5001
-# Define environment variable
-ENV NAME World
 
 # Run main.py when the container launches
 CMD ["python", "main.py"]

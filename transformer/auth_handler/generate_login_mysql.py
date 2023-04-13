@@ -7,12 +7,12 @@ class GenerateLoginMysql(GenerateLogin):
 
     def __init__(self):
         load_dotenv()
-        admin_user = os.getenv('ADMIN_MYSQL_USER')
-        admin_pw = os.getenv('ADMIN_MYSQL_PASSWORD')
-        host = os.getenv('ADMIN_MYSQL_HOST')
-        port = os.getenv('ADMIN_MYSQL_PORT')
+        self.admin_user = os.getenv('ADMIN_MYSQL_USER')
+        self.admin_pw = os.getenv('ADMIN_MYSQL_PASSWORD')
+        self.host = os.getenv('ADMIN_MYSQL_HOST')
+        self.port = os.getenv('ADMIN_MYSQL_PORT')
         self.connection = mysql.connector.connect(
-            user=admin_user, password=admin_pw, host=host, port=port
+            user=self.admin_user, password=self.admin_pw, host=self.host, port=self.port
         )
         self.cursor = self.connection.cursor()
 

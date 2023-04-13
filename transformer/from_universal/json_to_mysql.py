@@ -40,7 +40,6 @@ class JsonToMySQL(JsonToData):
 
     def insert_data(self, data, **kwargs):
         insert_query, records = data
-        print(insert_query)
         self.cursor.executemany(insert_query, records)
 
     def sql_datatype_from_python_datatype(self, value):

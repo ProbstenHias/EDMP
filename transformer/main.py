@@ -50,6 +50,7 @@ def convert():
         password=new_password,
         table_name=data['source_table'],
     )
+    print("Data converted successfully")
     
     send_email(
         data['email'],
@@ -58,8 +59,8 @@ def convert():
         new_password,
         new_dbname
     )
-
+    print("Email sent successfully")
     return jsonify({"status": "success"})
 
 if __name__ == "__main__":
-    app.run(port=5001)
+    app.run(port=5001, host="0.0.0.0")
