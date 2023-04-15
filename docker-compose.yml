@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
     container_name: registration-backend
     ports:
-      - "5002:5002"
+      - "5005:5005"
     volumes:
       - ./airflow/dags:/app/dags
     # now call another docker-compose file
