@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
 import os
 from postgres_template import postgres_dag
@@ -6,9 +6,13 @@ import requests
 import json
 from dotenv import load_dotenv
 import os
+
 app = Flask(__name__)
 CORS(app)
 
+@app.route("/")
+def home():
+    return render_template("index.html")
 
 @app.route("/register-db", methods=["POST"])
 def register_db():
