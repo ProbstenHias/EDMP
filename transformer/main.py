@@ -49,11 +49,8 @@ def convert():
     json = dc.convert_to_universal(
         source_db=data["source_db_type"],
         dbname=data["source_db"],
-        user=data["source_user"],
-        password=data["source_pwd"],
-        host=data["source_host"],
-        port=data["source_port"],
         table_name=data["source_table"],
+        schema=data["source_schema"],
     )
 
     target_db_type = data["target_db_type"]
@@ -77,7 +74,6 @@ def convert():
     print("Data converted successfully")
 
     send_email(data["email"], target_db_type, new_user, new_password, new_dbname)
-    print("Email sent successfully")
     return jsonify({"status": "success"})
 
 
