@@ -1,5 +1,5 @@
 from dotenv import load_dotenv
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, render_template, request
 from auth_handler.auth_email import send_email
 from auth_handler.generate_login_mysql import GenerateLoginMysql
 from auth_handler.generate_user_credentials import generate_user_credentials
@@ -16,51 +16,70 @@ dc = DataConverter()
 dc.register_data_to_json("postgres", PostgresDataToJson)
 dc.register_json_to_data("mysql", JsonToMySQL)
 
-@app.route('/convert', methods=['POST'])
+
+@app.route("/")
+def conversion_form():
+    # Create a list of target database options
+    db_options = [
+        ("mysql", "MySQL"),
+        ("postgres", "PostgreSQL"),
+        ("mongodb", "MongoDB"),
+    ]
+    # Get default values for the source database parameters from the query string
+    source_db_type = request.args.get("db_type", default="postgres")
+    source_db = request.args.get("db", default="mydatabase")
+    source_table = request.args.get("table", default="mytable")
+    source_schema = request.args.get("schema", default="myschema")
+    # Render the HTML template and pass in the form data
+    return render_template(
+        "index.html",
+        db_options=db_options,
+        source_db_type=source_db_type,
+        source_db=source_db,
+        source_schema=source_schema,
+        source_table=source_table,
+    )
+
+
+@app.route("/convert", methods=["POST"])
 def convert():
     # Get request data
     data = request.get_json()
-    
+
     json = dc.convert_to_universal(
-        source_db=data['source_db_type'],
-        dbname=data['source_db'],
-        user=data['source_user'],
-        password=data['source_pwd'],
-        host=data['source_host'],
-        port=data['source_port'],
-        table_name=data['source_table'],
+        source_db=data["source_db_type"],
+        dbname=data["source_db"],
+        user=data["source_user"],
+        password=data["source_pwd"],
+        host=data["source_host"],
+        port=data["source_port"],
+        table_name=data["source_table"],
     )
-    
-    
-    target_db_type = data['target_db_type']
+
+    target_db_type = data["target_db_type"]
     new_user, new_password, new_dbname = generate_user_credentials()
     print(new_user, new_password, new_dbname)
-    
+
     login_generator = None
-    if target_db_type == 'mysql':
+    if target_db_type == "mysql":
         login_generator = GenerateLoginMysql()
-    
+
     login_generator.generate_login(new_user, new_password, new_dbname)
-    
+
     dc.convert_to_data(
         target_db=target_db_type,
         json_data=json,
         dbname=new_dbname,
         user=new_user,
         password=new_password,
-        table_name=data['source_table'],
+        table_name=data["source_table"],
     )
     print("Data converted successfully")
-    
-    send_email(
-        data['email'],
-        target_db_type,
-        new_user,
-        new_password,
-        new_dbname
-    )
+
+    send_email(data["email"], target_db_type, new_user, new_password, new_dbname)
     print("Email sent successfully")
     return jsonify({"status": "success"})
 
+
 if __name__ == "__main__":
-    app.run(port=5001, host="0.0.0.0")
+    app.run(port=5006, host="0.0.0.0")
