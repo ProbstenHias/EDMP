@@ -10,6 +10,9 @@ The special feature of our platform is that it is designed for any data consumer
 ### Setup
 
 1. Clone the repository
+```bash
+git clone --recursive <link-to-repo>
+```
 2. Install Docker and Docker Compose
 3. Create the .env files in the root directory of the repository. Here are some example .env files:
 
