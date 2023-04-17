@@ -27,9 +27,9 @@ def conversion_form():
     ]
     # Get default values for the source database parameters from the query string
     source_db_type = request.args.get("db_type", default="postgres")
-    source_db = request.args.get("db", default="mydatabase")
-    source_table = request.args.get("table", default="mytable")
-    source_schema = request.args.get("schema", default="myschema")
+    source_db = request.args.get("source_db", default="mydatabase")
+    source_table = request.args.get("source_table", default="mytable")
+    source_schema = request.args.get("source_schema", default="myschema")
     # Render the HTML template and pass in the form data
     return render_template(
         "index.html",
@@ -45,6 +45,7 @@ def conversion_form():
 def convert():
     # Get request data
     data = request.get_json()
+    print(data)
 
     json = dc.convert_to_universal(
         source_db=data["source_db_type"],
